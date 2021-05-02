@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
         actions: <Widget>[
           TextButton(
               onPressed: () =>
-                  SystemChannels.platform.invokeMethod('Systemnavigator.pop'),
+                  SystemChannels.platform.invokeMethod('SystemNavigator.pop'),
               child: Text('Exit'))
         ],
       ),
