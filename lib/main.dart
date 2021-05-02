@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:internet_ui/image_ui.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,6 +31,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  late ConnectivityResult previous;
+
   @override
   void initState() {
     super.initState();
@@ -36,21 +41,37 @@ class _HomePageState extends State<HomePage> {
       InternetAddress.lookup("google.com").then((result) {
         if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
           // Internet Connection Available
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => ImageUi(),
+          ));
         } else {
           // Internet Connection Not Available
-          _showDilague();
+          _showDialog();
         }
       }).catchError((error) {
         // Internet Connection Not Available
-        _showDilague();
+        _showDialog();
       });
     } on SocketException catch (_) {
       // Internet Connection Not Available
-      _showDilague();
+      _showDialog();
     }
+
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult connResult) {
+      if( connResult == ConnectivityResult.none){
+
+      }else if(previous == ConnectivityResult.none){
+        // Internet Connection Available
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => ImageUi(),
+        ));
+      }
+
+      previous = connResult;
+    });
   }
 
-  void _showDilague() {
+  void _showDialog() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
