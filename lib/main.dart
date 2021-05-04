@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
@@ -35,40 +34,44 @@ class _HomePageState extends State<HomePage> {
   late ConnectivityResult previous;
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
     try {
-      InternetAddress.lookup("google.com").then((result) {
-        if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-          // Internet Connection Available
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => ImageUi(),
+      InternetAddress.lookup('google.com').then((result){
+        if(result.isNotEmpty && result[0].rawAddress.isNotEmpty){
+          // internet conn available
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) =>
+              ImageUi(),
           ));
-        } else {
-          // Internet Connection Not Available
+        }else{
+          // no conn
           _showDialog();
         }
-      }).catchError((error) {
-        // Internet Connection Not Available
+      }).catchError((error){
+        // no conn
         _showDialog();
       });
-    } on SocketException catch (_) {
-      // Internet Connection Not Available
+    } on SocketException catch (_){
+      // no internet
       _showDialog();
     }
 
-    Connectivity().onConnectivityChanged.listen((ConnectivityResult connResult) {
-      if( connResult == ConnectivityResult.none){
+
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult connResult){
+      if(connResult == ConnectivityResult.none){
 
       }else if(previous == ConnectivityResult.none){
-        // Internet Connection Available
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => ImageUi(),
+        // internet conn
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) =>
+            ImageUi(),
         ));
       }
 
       previous = connResult;
     });
+
+
+
   }
 
   void _showDialog() {
