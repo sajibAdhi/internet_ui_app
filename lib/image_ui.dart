@@ -25,7 +25,7 @@ class _ImageUiState extends State<ImageUi> {
     'https://images.pexels.com/photos/2800552/pexels-photo-2800552.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940 ',
   ];
 
-  List<String> toshow = [
+  List<String> toShow = [
     'https://images.pexels.com/photos/2115217/pexels-photo-2115217.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
     'https://images.pexels.com/photos/204611/pexels-photo-204611.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
     'https://images.pexels.com/photos/2800552/pexels-photo-2800552.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940 ',
@@ -111,9 +111,9 @@ class _ImageUiState extends State<ImageUi> {
             ),
             Column(
               children: <Widget>[
-                cards(toshow[0]),
-                cards(toshow[1]),
-                cards(toshow[2]),
+                cards(toShow[0]),
+                cards(toShow[1]),
+                cards(toShow[2]),
               ],
             )
           ],
