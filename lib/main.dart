@@ -30,7 +30,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  late ConnectivityResult previous;
+  ConnectivityResult previous = ConnectivityResult.none;
 
   @override
   void initState(){
@@ -68,9 +68,6 @@ class _HomePageState extends State<HomePage> {
 
       previous = connResult;
     });
-
-
-
   }
 
   void _showDialog() {

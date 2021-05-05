@@ -30,6 +30,31 @@ class _ImageUiState extends State<ImageUi> {
     'https://images.pexels.com/photos/204611/pexels-photo-204611.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
     'https://images.pexels.com/photos/2800552/pexels-photo-2800552.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940 ',
   ];
+  
+  void createList(String kword){
+    if(kword == "code"){
+      toShow = [];
+      setState((){
+        for(var source in code ){
+          toShow.add(source);
+        }
+      });
+    }else if(kword == "nature"){
+      toShow = [];
+      setState((){
+        for(var source in code ){
+          toShow.add(source);
+        }
+      });
+    }else if(kword == "computer"){
+      toShow = [];
+      setState((){
+        for(var source in code ){
+          toShow.add(source);
+        }
+      });
+    }
+  }
 
 
   Widget cards(String src) {
@@ -70,7 +95,7 @@ class _ImageUiState extends State<ImageUi> {
               children: <Widget>[
                 Expanded(
                   child: TextButton(
-                    onPressed: () => {},
+                    onPressed: () => createList('code'),
                     child: Text(
                       "Code",
                       style: TextStyle(
@@ -83,7 +108,7 @@ class _ImageUiState extends State<ImageUi> {
                 ),
                 Expanded(
                   child: TextButton(
-                    onPressed: () => {},
+                    onPressed: () => createList('nature'),
                     child: Text(
                       "Nature",
                       style: TextStyle(
@@ -96,7 +121,7 @@ class _ImageUiState extends State<ImageUi> {
                 ),
                 Expanded(
                   child: TextButton(
-                    onPressed: () => {},
+                    onPressed: () => createList('computer'),
                     child: Text(
                       "Computers",
                       style: TextStyle(
