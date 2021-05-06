@@ -30,7 +30,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  ConnectivityResult previous = ConnectivityResult.none;
+  var previous;
 
   @override
   void initState(){

@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 
 class ImageUi extends StatefulWidget {
@@ -6,6 +9,11 @@ class ImageUi extends StatefulWidget {
 }
 
 class _ImageUiState extends State<ImageUi> {
+
+  // ignore: cancel_subscriptions
+  late StreamSubscription connectivitySubscription;
+
+  ConnectivityResult _previousResult;
 
   List<String> code = [
     'https://images.pexels.com/photos/169573/pexels-photo-169573.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
@@ -42,14 +50,14 @@ class _ImageUiState extends State<ImageUi> {
     }else if(kword == "nature"){
       toShow = [];
       setState((){
-        for(var source in code ){
+        for(var source in nature ){
           toShow.add(source);
         }
       });
     }else if(kword == "computer"){
       toShow = [];
       setState((){
-        for(var source in code ){
+        for(var source in computer ){
           toShow.add(source);
         }
       });
@@ -145,5 +153,10 @@ class _ImageUiState extends State<ImageUi> {
         ),
       ),
     );
+  }
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<StreamSubscription>('connectivitySubscription', connectivitySubscription));
   }
 }
