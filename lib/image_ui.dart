@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ImageUi extends StatefulWidget {
   @override
@@ -9,11 +11,11 @@ class ImageUi extends StatefulWidget {
 }
 
 class _ImageUiState extends State<ImageUi> {
-
-  // ignore: cancel_subscriptions
   late StreamSubscription connectivitySubscription;
 
-  ConnectivityResult _previousResult;
+  late ConnectivityResult _previousResult;
+
+  bool diolagueShow = false;
 
   List<String> code = [
     'https://images.pexels.com/photos/169573/pexels-photo-169573.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
@@ -38,32 +40,73 @@ class _ImageUiState extends State<ImageUi> {
     'https://images.pexels.com/photos/204611/pexels-photo-204611.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
     'https://images.pexels.com/photos/2800552/pexels-photo-2800552.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940 ',
   ];
-  
-  void createList(String kword){
-    if(kword == "code"){
+
+  Future<bool> checkInternet() async {
+    try {
+      final result = await InternetAddress.lookup("google.com");
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        return Future.value(true);
+      }
+      return false;
+    } on SocketException catch (_) {
+      return Future.value(false);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    connectivitySubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult connResult) {
+      if (connResult == ConnectivityResult.none) {
+        diolagueShow = true;
+        _showDialog();
+      } else if (_previousResult == ConnectivityResult.none) {
+        checkInternet().then((result) => {
+              if (result == true)
+                {
+                  if (diolagueShow == true) {Navigator.pop(context)}
+                }
+            });
+      }
+
+      _previousResult = connResult;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    connectivitySubscription.cancel();
+  }
+
+  void createList(String kword) {
+    if (kword == "code") {
       toShow = [];
-      setState((){
-        for(var source in code ){
+      setState(() {
+        for (var source in code) {
           toShow.add(source);
         }
       });
-    }else if(kword == "nature"){
+    } else if (kword == "nature") {
       toShow = [];
-      setState((){
-        for(var source in nature ){
+      setState(() {
+        for (var source in nature) {
           toShow.add(source);
         }
       });
-    }else if(kword == "computer"){
+    } else if (kword == "computer") {
       toShow = [];
-      setState((){
-        for(var source in computer ){
+      setState(() {
+        for (var source in computer) {
           toShow.add(source);
         }
       });
     }
   }
-
 
   Widget cards(String src) {
     return Card(
@@ -154,9 +197,20 @@ class _ImageUiState extends State<ImageUi> {
       ),
     );
   }
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<StreamSubscription>('connectivitySubscription', connectivitySubscription));
+
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Error"),
+        content: Text("No Internet Connection Available"),
+        actions: <Widget>[
+          TextButton(
+              onPressed: () =>
+                  SystemChannels.platform.invokeMethod('SystemNavigator.pop'),
+              child: Text('Exit'))
+        ],
+      ),
+    );
   }
 }

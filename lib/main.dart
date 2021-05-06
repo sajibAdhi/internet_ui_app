@@ -29,40 +29,39 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-  var previous;
+  late ConnectivityResult previous;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     try {
-      InternetAddress.lookup('google.com').then((result){
-        if(result.isNotEmpty && result[0].rawAddress.isNotEmpty){
+      InternetAddress.lookup('google.com').then((result) {
+        if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
           // internet conn available
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) =>
-              ImageUi(),
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => ImageUi(),
           ));
-        }else{
+        } else {
           // no conn
           _showDialog();
         }
-      }).catchError((error){
+      }).catchError((error) {
         // no conn
         _showDialog();
       });
-    } on SocketException catch (_){
+    } on SocketException catch (_) {
       // no internet
       _showDialog();
     }
 
-
-    Connectivity().onConnectivityChanged.listen((ConnectivityResult connResult){
-      if(connResult == ConnectivityResult.none){
-
-      }else if(previous == ConnectivityResult.none){
+    Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult connResult) {
+      if (connResult == ConnectivityResult.none) {
+      } else if (previous == ConnectivityResult.none) {
         // internet conn
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) =>
-            ImageUi(),
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => ImageUi(),
         ));
       }
 
